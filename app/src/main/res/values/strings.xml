@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WorkoutPlan</string>
+    <string name="category">category</string>
+    <string name="exercise_title_example">Exercise Title Example</string>
+</resources>
