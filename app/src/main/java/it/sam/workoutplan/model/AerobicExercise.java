@@ -1,5 +1,7 @@
 package it.sam.workoutplan.model;
 
+import java.util.List;
+
 import it.sam.workoutplan.enumerator.Category;
 
 public class AerobicExercise extends Exercise {

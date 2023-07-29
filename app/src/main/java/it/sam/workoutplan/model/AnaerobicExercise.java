@@ -1,5 +1,6 @@
 package it.sam.workoutplan.model;
 
+import java.util.List;
 import java.util.Map;
 
 import it.sam.workoutplan.enumerator.Category;
@@ -11,17 +12,17 @@ public class AnaerobicExercise extends Exercise {
     private String buffer;
     private String weight;
     private Map<String, String> progression;
-    private Category category;
+    private List<Category> categories;
 
     public AnaerobicExercise() {}
 
-    public AnaerobicExercise(int set, String reps, String buffer, String weight, Map<String, String> progression, Category category) {
+    public AnaerobicExercise(int set, String reps, String buffer, String weight, Map<String, String> progression, List<Category> categories) {
         this.set = set;
         this.reps = reps;
         this.buffer = buffer;
         this.weight = weight;
         this.progression = progression;
-        this.category = category;
+        this.categories = categories;
     }
 
     public int getSet() {
@@ -64,11 +65,11 @@ public class AnaerobicExercise extends Exercise {
         this.progression.put(weight, weeks);
     }
 
-    public Category getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
