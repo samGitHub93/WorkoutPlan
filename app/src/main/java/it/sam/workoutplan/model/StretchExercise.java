@@ -8,6 +8,12 @@ public class StretchExercise extends Exercise {
 
     private List<Category> categories;
 
+    public StretchExercise() {}
+
+    public StretchExercise(List<Category> categories) {
+        this.categories = categories;
+    }
+
     public List<Category> getCategories() {
         return categories;
     }
