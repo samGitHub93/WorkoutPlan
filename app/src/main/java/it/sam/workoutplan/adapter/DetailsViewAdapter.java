@@ -49,6 +49,7 @@ public class DetailsViewAdapter<K, V> extends RecyclerView.Adapter<DetailsViewHo
             bindWeightliftingDetails(holder, position);
         else if(exerciseWorkoutSets.get(0).getCategory() == Category.CARDIO)
             bindCardioDetails(holder, position);
+        visibilityManagement(holder, position);
     }
 
     @Override
@@ -58,47 +59,73 @@ public class DetailsViewAdapter<K, V> extends RecyclerView.Adapter<DetailsViewHo
 
     public void bindWeightliftingDetails(@NonNull DetailsViewHolder holder, final int position) {
         WeightliftingSet weightliftingSet = (WeightliftingSet) exerciseWorkoutSets.get(position);
-        holder.getWeight().setText(((Weight) weightliftingSet.get(WeightliftingKey.WEIGHT)).getValuePlusUnitOfMeasure());
-        holder.getRpe().setText(((Rpe) weightliftingSet.get(WeightliftingKey.RPE)).getValuePlusUnitOfMeasure());
-        holder.getBuffer().setText(((Buffer) weightliftingSet.get(WeightliftingKey.BUFFER)).getValue());
-        holder.getPause().setText(((Pause) weightliftingSet.get(WeightliftingKey.PAUSE)).getValuePlusUnitOfMeasure());
-        holder.getPercentage().setText(((Percentage) weightliftingSet.get(WeightliftingKey.PERCENTAGE)).getValuePlusUnitOfMeasure());
-        holder.getReps().setText(((Reps) weightliftingSet.get(WeightliftingKey.REPS)).getValue());
-        holder.getNotes().setText(((Notes) weightliftingSet.get(WeightliftingKey.NOTES)).getValue());
-        postWeightliftingHolderManagement(holder);
+        if(weightliftingSet.get(WeightliftingKey.WEIGHT) != null)
+            holder.getWeight().setText(((Weight) weightliftingSet.get(WeightliftingKey.WEIGHT)).getValuePlusUnitOfMeasure());
+        if(weightliftingSet.get(WeightliftingKey.RPE) != null)
+            holder.getRpe().setText(((Rpe) weightliftingSet.get(WeightliftingKey.RPE)).getValuePlusUnitOfMeasure());
+        if(weightliftingSet.get(WeightliftingKey.BUFFER) != null)
+            holder.getBuffer().setText(((Buffer) weightliftingSet.get(WeightliftingKey.BUFFER)).getValue());
+        if(weightliftingSet.get(WeightliftingKey.PAUSE) != null)
+            holder.getPause().setText(((Pause) weightliftingSet.get(WeightliftingKey.PAUSE)).getValuePlusUnitOfMeasure());
+        if(weightliftingSet.get(WeightliftingKey.PERCENTAGE) != null)
+            holder.getPercentage().setText(((Percentage) weightliftingSet.get(WeightliftingKey.PERCENTAGE)).getValuePlusUnitOfMeasure());
+        if(weightliftingSet.get(WeightliftingKey.REPS) != null)
+                holder.getReps().setText(((Reps) weightliftingSet.get(WeightliftingKey.REPS)).getValue());
+        if(weightliftingSet.get(WeightliftingKey.NOTES) != null)
+            holder.getNotes().setText(((Notes) weightliftingSet.get(WeightliftingKey.NOTES)).getValue());
     }
 
     public void bindCardioDetails(@NonNull DetailsViewHolder holder, final int position) {
         CardioSet cardioSet = (CardioSet) exerciseWorkoutSets.get(position);
+        if(cardioSet.get(CardioKey.DURATION) != null)
             holder.getDuration().setText(((Duration) cardioSet.get(CardioKey.DURATION)).getValuePlusUnitOfMeasure());
+        if(cardioSet.get(CardioKey.GOAL) != null)
             holder.getGoal().setText(((Goal) cardioSet.get(CardioKey.GOAL)).getValue());
+        if(cardioSet.get(CardioKey.LAST_PERFORMANCE) != null)
             holder.getLastPerformance().setText(((LastPerformance) cardioSet.get(CardioKey.LAST_PERFORMANCE)).getValuePlusUnitOfMeasure());
-        postCardioHolderManagement(holder);
     }
 
-    private void postWeightliftingHolderManagement(@NonNull DetailsViewHolder holder){
-        if(holder.getWeight() != null && holder.isEmpty(holder.getWeight()))
+    private void visibilityManagement(@NonNull DetailsViewHolder holder, final int position){
+        if(holder.isEmpty(holder.getWeight())) {
             holder.getWeight().setVisibility(View.GONE);
-        if(holder.getBuffer() != null && holder.isEmpty(holder.getBuffer()))
+            holder.getWeightName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getBuffer())) {
             holder.getBuffer().setVisibility(View.GONE);
-        if(holder.getNotes() != null && holder.isEmpty(holder.getNotes()))
+            holder.getBufferName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getNotes())) {
             holder.getNotes().setVisibility(View.GONE);
-        if(holder.getPause() != null && holder.isEmpty(holder.getPause()))
+            holder.getNotesName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getPause())) {
             holder.getPause().setVisibility(View.GONE);
-        if(holder.getPercentage() != null && holder.isEmpty(holder.getPercentage()))
+            holder.getPauseName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getPercentage())) {
             holder.getPercentage().setVisibility(View.GONE);
-        if(holder.getReps() != null && holder.isEmpty(holder.getReps()))
+            holder.getPercentageName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getReps())) {
             holder.getReps().setVisibility(View.GONE);
-        if(holder.getRpe() != null && holder.isEmpty(holder.getRpe()))
+            holder.getRepsName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getRpe())) {
             holder.getRpe().setVisibility(View.GONE);
-    }
-
-    private void postCardioHolderManagement(@NonNull DetailsViewHolder holder){
-        if(holder.getDuration() != null && holder.isEmpty(holder.getDuration()))
+            holder.getRpeName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getDuration())) {
             holder.getDuration().setVisibility(View.GONE);
-        if(holder.getGoal() != null && holder.isEmpty(holder.getGoal()))
+            holder.getDurationName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getGoal())) {
             holder.getGoal().setVisibility(View.GONE);
-        if(holder.getLastPerformance() != null && holder.isEmpty(holder.getLastPerformance()))
+            holder.getGoalName().setVisibility(View.GONE);
+        }
+        if(holder.isEmpty(holder.getLastPerformance())) {
             holder.getLastPerformance().setVisibility(View.GONE);
+            holder.getLastPerformanceName().setVisibility(View.GONE);
+        }
+        if(position != 0) holder.getItemDetailsNames().setVisibility(View.GONE);
     }
 }

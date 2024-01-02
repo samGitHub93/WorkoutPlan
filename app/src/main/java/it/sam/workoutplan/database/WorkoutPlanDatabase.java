@@ -30,5 +30,5 @@ public abstract class WorkoutPlanDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract RoomWorkoutPlanDao roomExerciseDayDao();
+    public abstract RoomWorkoutPlanDao roomWorkoutPlanDao();
 }

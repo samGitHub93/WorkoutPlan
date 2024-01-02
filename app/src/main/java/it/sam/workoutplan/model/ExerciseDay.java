@@ -8,6 +8,15 @@ public class ExerciseDay {
 
     private String dayName;
     private List<Exercise> exercises;
+    private String generalNotes;
+
+    public String getGeneralNotes() {
+        return generalNotes;
+    }
+
+    public void setGeneralNotes(String generalNotes) {
+        this.generalNotes = generalNotes;
+    }
 
     public String getDayName() {
         return dayName;

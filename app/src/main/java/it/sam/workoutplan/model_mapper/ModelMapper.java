@@ -1,5 +1,7 @@
 package it.sam.workoutplan.model_mapper;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,9 +9,11 @@ import java.util.Map;
 
 import it.sam.workoutplan.database.model.RoomExercise;
 import it.sam.workoutplan.database.model.RoomExerciseDay;
+import it.sam.workoutplan.database.model.RoomWorkoutPlan;
 import it.sam.workoutplan.enumerator.BodyPart;
 import it.sam.workoutplan.enumerator.Category;
 import it.sam.workoutplan.enumerator.ProgressionKeys;
+import it.sam.workoutplan.model.WorkoutPlan;
 import it.sam.workoutplan.model.exercise.CardioExercise;
 import it.sam.workoutplan.model.exercise.WeightliftingExercise;
 import it.sam.workoutplan.model.exercise.Exercise;
@@ -18,7 +22,43 @@ import it.sam.workoutplan.model.exercise.StretchExercise;
 
 public class ModelMapper {
 
-    public static RoomExerciseDay toRoomExerciseDay(ExerciseDay exerciseDay) throws Exception {
+    public static List<RoomWorkoutPlan> toRoomWorkoutPlans(List<WorkoutPlan> workoutPlans) throws Exception {
+        List<RoomWorkoutPlan> roomWorkoutPlans = new ArrayList<>();
+        for(WorkoutPlan workoutPlan : workoutPlans){
+            List<ExerciseDay> exerciseDays = workoutPlan.getExerciseDays();
+            List<RoomExerciseDay> roomExerciseDays = new ArrayList<>();
+            for(ExerciseDay exerciseDay : exerciseDays){
+                RoomExerciseDay roomExerciseDay = toRoomExerciseDay(exerciseDay);
+                roomExerciseDays.add(roomExerciseDay);
+            }
+            RoomWorkoutPlan roomWorkoutPlan = new RoomWorkoutPlan();
+            roomWorkoutPlan.set(roomExerciseDays);
+            roomWorkoutPlan.setName(workoutPlan.getWorkoutPlanName());
+            roomWorkoutPlan.setGeneralNotes(workoutPlan.getGeneralNotes());
+            roomWorkoutPlans.add(roomWorkoutPlan);
+        }
+        return roomWorkoutPlans;
+    }
+
+    public static List<WorkoutPlan> toModelWorkoutPlans(List<RoomWorkoutPlan> roomWorkoutPlans) throws Exception {
+        List<WorkoutPlan> workoutPlans = new ArrayList<>();
+        for(RoomWorkoutPlan roomWorkoutPlan : roomWorkoutPlans){
+            List<RoomExerciseDay> roomExerciseDays = roomWorkoutPlan.get();
+            List<ExerciseDay> exerciseDays = new ArrayList<>();
+            for(RoomExerciseDay roomExerciseDay : roomExerciseDays){
+                ExerciseDay exerciseDay = toModelExerciseDay(roomExerciseDay);
+                exerciseDays.add(exerciseDay);
+            }
+            WorkoutPlan workoutPlan = new WorkoutPlan();
+            workoutPlan.setExerciseDays(exerciseDays);
+            workoutPlan.setWorkoutPlanName(roomWorkoutPlan.getName());
+            workoutPlan.setGeneralNotes(roomWorkoutPlan.getGeneralNotes());
+            workoutPlans.add(workoutPlan);
+        }
+        return workoutPlans;
+    }
+
+    private static RoomExerciseDay toRoomExerciseDay(ExerciseDay exerciseDay) throws Exception {
         RoomExerciseDay roomExerciseDay = new RoomExerciseDay();
         List<RoomExercise> roomExercises = new ArrayList<>();
         for(Exercise exercise : exerciseDay.getExercises()){
@@ -26,10 +66,12 @@ public class ModelMapper {
             roomExercises.add(roomExercise);
         }
         roomExerciseDay.setExercises(roomExercises);
+        roomExerciseDay.setName(exerciseDay.getDayName());
+        roomExerciseDay.setGeneralNotes(exerciseDay.getGeneralNotes());
         return roomExerciseDay;
     }
 
-    public static ExerciseDay toModelExerciseDay(RoomExerciseDay roomExerciseDay) throws Exception {
+    private static ExerciseDay toModelExerciseDay(RoomExerciseDay roomExerciseDay) throws Exception {
         ExerciseDay exerciseDay = new ExerciseDay();
         List<Exercise> exercises = new ArrayList<>();
         for(RoomExercise roomExercise : roomExerciseDay.getExercises()){
@@ -37,6 +79,8 @@ public class ModelMapper {
             exercises.add(exercise);
         }
         exerciseDay.setExercises(exercises);
+        exerciseDay.setDayName(roomExerciseDay.getName());
+        exerciseDay.setGeneralNotes(roomExerciseDay.getGeneralNotes());
         return exerciseDay;
     }
 
@@ -63,7 +107,7 @@ public class ModelMapper {
         } else throw new Exception();
     }
 
-    private static RoomExercise fromWeightliftingExerciseToRoomExercise(WeightliftingExercise weightliftingExercise){
+    private static RoomExercise fromWeightliftingExerciseToRoomExercise(WeightliftingExercise weightliftingExercise) throws JSONException {
         RoomExercise roomExercise = new RoomExercise();
         roomExercise.setName(weightliftingExercise.getName());
         roomExercise.setCategory(Category.WEIGHTLIFTING);
@@ -73,7 +117,7 @@ public class ModelMapper {
         return roomExercise;
     }
 
-    private static RoomExercise fromCardioExerciseToRoomExercise(CardioExercise cardioExercise){
+    private static RoomExercise fromCardioExerciseToRoomExercise(CardioExercise cardioExercise) throws JSONException {
         RoomExercise roomExercise = new RoomExercise();
         roomExercise.setName(cardioExercise.getName());
         roomExercise.setCategory(Category.CARDIO);

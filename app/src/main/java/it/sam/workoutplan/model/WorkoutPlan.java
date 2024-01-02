@@ -6,6 +6,7 @@ public class WorkoutPlan {
 
     private String workoutPlanName;
     private List<ExerciseDay> exerciseDays;
+    private String generalNotes;
 
     public String getWorkoutPlanName() {
         return workoutPlanName;
@@ -13,6 +14,14 @@ public class WorkoutPlan {
 
     public void setWorkoutPlanName(String workoutPlanName) {
         this.workoutPlanName = workoutPlanName;
+    }
+
+    public String getGeneralNotes() {
+        return generalNotes;
+    }
+
+    public void setGeneralNotes(String generalNotes) {
+        this.generalNotes = generalNotes;
     }
 
     public List<ExerciseDay> getExerciseDays() {

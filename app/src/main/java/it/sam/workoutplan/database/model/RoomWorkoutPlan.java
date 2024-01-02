@@ -13,8 +13,14 @@ public class RoomWorkoutPlan {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "name")
+    private String name;
+
     @ColumnInfo(name = "exerciseDays")
     private String exerciseDays;
+
+    @ColumnInfo(name = "generalNotes")
+    private String generalNotes;
 
     public RoomWorkoutPlan() {}
 
@@ -22,6 +28,22 @@ public class RoomWorkoutPlan {
     public RoomWorkoutPlan(int id, List<RoomExerciseDay> exerciseDays) {
         this.id = id;
         this.exerciseDays = Converter.fromDaysToString(exerciseDays);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGeneralNotes() {
+        return generalNotes;
+    }
+
+    public void setGeneralNotes(String generalNotes) {
+        this.generalNotes = generalNotes;
     }
 
     public int getId() {

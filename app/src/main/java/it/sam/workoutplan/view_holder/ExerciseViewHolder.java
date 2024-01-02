@@ -11,22 +11,27 @@ import com.google.android.material.card.MaterialCardView;
 
 import it.sam.workoutplan.R;
 
-public class ItemViewHolder extends RecyclerView.ViewHolder {
+public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
+    private final MaterialCardView materialCardView;
     private final ImageView icon;
     private final TextView title;
     private final TextView bodyParts;
     private final RecyclerView recyclerView;
     private final TextView generalNotes;
 
-    public ItemViewHolder(@NonNull View itemView) {
+    public ExerciseViewHolder(@NonNull View itemView) {
         super(itemView);
-        MaterialCardView materialCardView = itemView.findViewById(R.id.exercise_card);
+        materialCardView = itemView.findViewById(R.id.exercise_card);
         icon = materialCardView.findViewById(R.id.exercise_icon);
         title = materialCardView.findViewById(R.id.exercise_title);
         bodyParts = materialCardView.findViewById(R.id.exercise_body_parts);
         recyclerView = materialCardView.findViewById(R.id.recycler_details);
         generalNotes = materialCardView.findViewById(R.id.exercise_general_notes);
+    }
+
+    public MaterialCardView getMaterialCardView() {
+        return materialCardView;
     }
 
     public ImageView getIcon() {

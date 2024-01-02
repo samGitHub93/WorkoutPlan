@@ -26,27 +26,27 @@ import it.sam.workoutplan.model.parameter.CardioParameter;
 import it.sam.workoutplan.model.parameter.WeightliftingParameter;
 import it.sam.workoutplan.model.set.CardioSet;
 import it.sam.workoutplan.model.set.WeightliftingSet;
-import it.sam.workoutplan.view_holder.ItemViewHolder;
+import it.sam.workoutplan.view_holder.ExerciseViewHolder;
 
-public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+public class ExerciseViewAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
 
     private final Context context;
     private final List<Exercise> exercises;
 
-    public ItemViewAdapter(Context context, List<Exercise> exercises) {
+    public ExerciseViewAdapter(Context context, List<Exercise> exercises) {
         this.context = context;
         this.exercises = exercises;
     }
 
     @NonNull
     @Override
-    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise, parent, false);
-        return new ItemViewHolder(view);
+        return new ExerciseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ExerciseViewHolder holder, final int position) {
         Exercise exercise = exercises.get(position);
         Category category = exercise.getCategory();
         if(category == Category.WEIGHTLIFTING) {
@@ -66,7 +66,7 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         return exercises.size();
     }
 
-    private void buildWeightliftingHolder(@NonNull ItemViewHolder holder, Exercise exercise){
+    private void buildWeightliftingHolder(@NonNull ExerciseViewHolder holder, Exercise exercise){
         WeightliftingExercise weightliftingExercise = (WeightliftingExercise) exercise;
         holder.getIcon().setImageResource(R.drawable.asset_anaerobic_exercise);
         List<BodyPart> bodyParts = weightliftingExercise.getBodyParts();
@@ -78,7 +78,7 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.getRecyclerView().setAdapter(adapter);
     }
 
-    private void buildCardioHolder(ItemViewHolder holder, Exercise exercise) {
+    private void buildCardioHolder(ExerciseViewHolder holder, Exercise exercise) {
         CardioExercise cardioExercise = (CardioExercise) exercise;
         holder.getIcon().setImageResource(R.drawable.asset_aerobic_exercise);
         holder.getBodyParts().setText(R.string.cardio_string);
@@ -88,7 +88,7 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.getRecyclerView().setAdapter(adapter);
     }
 
-    private void buildStretchHolder(ItemViewHolder holder, Exercise exercise) {
+    private void buildStretchHolder(ExerciseViewHolder holder, Exercise exercise) {
         StretchExercise stretchExercise = (StretchExercise) exercise;
         holder.getIcon().setImageResource(R.drawable.asset_stretch_exercise);
         List<BodyPart> bodyParts = stretchExercise.getBodyParts();
@@ -96,13 +96,13 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.getBodyParts().setText(bodyPartsString);
     }
 
-    private void postHolderManagement(@NonNull ItemViewHolder holder){
+    private void postHolderManagement(@NonNull ExerciseViewHolder holder){
         if(holder.getTitle() != null && holder.isEmpty(holder.getTitle()))
             holder.getTitle().setVisibility(View.GONE);
         if(holder.getBodyParts() != null && holder.isEmpty(holder.getBodyParts()))
             holder.getBodyParts().setVisibility(View.GONE);
         if(holder.getGeneralNotes() != null && holder.isEmpty(holder.getGeneralNotes()))
-            holder.getGeneralNotes().setVisibility(View.GONE);
+            holder.getGeneralNotes().setVisibility(View.INVISIBLE);
     }
 
     private String getBodyPartsString(List<BodyPart> bodyParts){

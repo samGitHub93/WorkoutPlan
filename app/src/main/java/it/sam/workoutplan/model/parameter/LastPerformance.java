@@ -1,5 +1,8 @@
 package it.sam.workoutplan.model.parameter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LastPerformance implements CardioParameter {
     private static final String NAME = "LAST_PERFORMANCE";
     private String unitOfMeasure;
@@ -36,5 +39,14 @@ public class LastPerformance implements CardioParameter {
     public String getValuePlusUnitOfMeasure() {
         String valuePlusUnitOfMeasure = value + " " + unitOfMeasure;
         return valuePlusUnitOfMeasure.trim();
+    }
+
+    @Override
+    public String toJson() throws JSONException {
+        JSONObject jo = new JSONObject();
+        jo.put("name", NAME);
+        jo.put("unitOfMeasure", unitOfMeasure);
+        jo.put("value", value);
+        return jo.toString();
     }
 }

@@ -6,19 +6,18 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import it.sam.workoutplan.adapter.ItemViewAdapter;
+import it.sam.workoutplan.adapter.WorkoutPlanViewAdapter;
 import it.sam.workoutplan.database.WorkoutPlanDatabase;
-import it.sam.workoutplan.database.model.RoomExerciseDay;
 import it.sam.workoutplan.database.model.RoomWorkoutPlan;
 import it.sam.workoutplan.enumerator.BodyPart;
 import it.sam.workoutplan.enumerator.CardioKey;
 import it.sam.workoutplan.enumerator.WeightliftingKey;
 import it.sam.workoutplan.model.ExerciseDay;
+import it.sam.workoutplan.model.WorkoutPlan;
 import it.sam.workoutplan.model.exercise.CardioExercise;
 import it.sam.workoutplan.model.exercise.StretchExercise;
 import it.sam.workoutplan.model.exercise.WeightliftingExercise;
@@ -37,7 +36,7 @@ public class TestExample {
 
     public static void run(Context context) throws Exception {
         WorkoutPlanDatabase database = WorkoutPlanDatabase.getDatabase(context);
-        database.roomExerciseDayDao().deleteAll();
+        database.roomWorkoutPlanDao().deleteAll();
 
         WeightliftingExercise weightliftingExercise_1 = new WeightliftingExercise();
         weightliftingExercise_1.setName("Lat Machine");
@@ -117,6 +116,7 @@ public class TestExample {
 
         ExerciseDay exerciseDay = new ExerciseDay();
         exerciseDay.setDayName("Monday");
+        exerciseDay.setGeneralNotes("Chest, Back, Biceps, Cardio");
         exerciseDay.setExercises(Arrays.asList(
                 weightliftingExercise_1,
                 weightliftingExercise_2,
@@ -125,27 +125,22 @@ public class TestExample {
                 stretchExercise
         ));
 
-        RoomExerciseDay roomExerciseDay = ModelMapper.toRoomExerciseDay(exerciseDay);
+        WorkoutPlan workoutPlan = new WorkoutPlan();
+        workoutPlan.setWorkoutPlanName("Plan 1");
+        workoutPlan.setGeneralNotes("WEIGHTLIFTING, STRENGTH, CARDIO");
+        workoutPlan.setExerciseDays(Collections.singletonList(exerciseDay));
 
-        RoomWorkoutPlan roomWorkoutPlan = new RoomWorkoutPlan();
-        roomWorkoutPlan.set(Collections.singletonList(roomExerciseDay));
+        List<RoomWorkoutPlan> roomWorkoutPlans = ModelMapper.toRoomWorkoutPlans(Collections.singletonList(workoutPlan));
 
-        database.roomExerciseDayDao().insert(roomWorkoutPlan);
-        List<RoomWorkoutPlan> list = database.roomExerciseDayDao().getAll();
-        RoomWorkoutPlan roomWorkoutPlan1 = list.get(0);
+        database.roomWorkoutPlanDao().insertAll(roomWorkoutPlans);
 
-        List<RoomExerciseDay> roomExerciseDays = roomWorkoutPlan1.get();
-        List<ExerciseDay> exerciseDays = new ArrayList<>();
-        for(RoomExerciseDay roomExerciseDay1 : roomExerciseDays){
-            ExerciseDay exerciseDay1 = ModelMapper.toModelExerciseDay(roomExerciseDay1);
-            exerciseDays.add(exerciseDay1);
-        }
+        // -------------------------------------------------------------------------------------
 
-        ItemViewAdapter adapter = new ItemViewAdapter(context, exerciseDays.get(0).getExercises());
-        RecyclerView recyclerView = ((Activity)context).findViewById(R.id.recycler_list);
+        List<RoomWorkoutPlan> list = database.roomWorkoutPlanDao().getAll();
+
+        WorkoutPlanViewAdapter adapter = new WorkoutPlanViewAdapter(context, ModelMapper.toModelWorkoutPlans(list));
+        RecyclerView recyclerView = ((Activity)context).findViewById(R.id.recycler_workout_plan_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
-
-        database.roomExerciseDayDao().deleteAll();
     }
 }
